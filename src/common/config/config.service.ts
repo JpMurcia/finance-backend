@@ -63,12 +63,14 @@ export class ConfigService {
 
   get orm_config(): any {
     return {
+      name: 'default',
       type: this.envConfig.DB_TYPE,
       host: this.envConfig.DB_HOST,
       port: this.envConfig.DB_PORT,
       username: this.envConfig.DB_USERNAME,
       password: this.envConfig.DB_PASSWORD,
       database: this.envConfig.DB_DATABASE,
+      entities: ["entities/*{.js,.ts}"],
       synchronize: true,
       logging: false
     }

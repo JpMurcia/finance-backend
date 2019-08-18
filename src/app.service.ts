@@ -8,6 +8,6 @@ export class AppService {
   }
 
   async getHello() {
-    return 'Hello'
+    return 'Hello mundo'
   }
 }

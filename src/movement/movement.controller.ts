@@ -7,12 +7,12 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { Permissions } from '../common/decorators/permission.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { PermissionsGuard } from '../common/guards/permission.guard';
-import { HeadQuarterService } from './headquarter.service';
+import { MovementService } from './movement.service';
 
-@Controller('headquarter')
-export class HeadQuarterController {
+@Controller('movement')
+export class MovementController {
   [x: string]: any;
-  constructor(private readonly headQuarterService: HeadQuarterService) {}
+  constructor(private readonly MovementService: MovementService) {}
 
   @Get()
   @UseGuards(AuthGuard('bearer'), PermissionsGuard, RolesGuard)
@@ -22,13 +22,13 @@ export class HeadQuarterController {
     //Data del usuario: id, email, name, lastname, person_id, rols, permissions
     console.log(request.HEADQUARTER.id);
     
-    return this.headQuarterService.getHello();
+    return this.MovementService.getHello();
   }
 
-  @Get('/:headquarterId')
-  async GetHeadquarter(@Param('headquarterId') headquarterId){
-    console.log(headquarterId)
-    return this.headQuarterService.GetHeadquarter(headquarterId);
+  @Get('/:UserId')
+  async GetMovement(@Param('UserId') UserId){
+    console.log(UserId)
+    return this.MovementService.GetMovement(UserId);
   }
 
  
