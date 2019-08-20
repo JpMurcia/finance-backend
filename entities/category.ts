@@ -1,16 +1,18 @@
 import {BaseEntity,Column,Entity,Index,JoinColumn,JoinTable,ManyToMany,ManyToOne,OneToMany,OneToOne,PrimaryColumn,PrimaryGeneratedColumn,RelationId} from "typeorm";
+import {movement_type} from "./movement_type";
 import {movement} from "./movement";
 
 
 @Entity("category",{schema:"finance" } )
-@Index("fk_category_category1_idx",["categoryIdcategory",])
+@Index("fk_category_category1_idx",["fkIdCategory",])
+@Index("FK_category_movement_type",["fkTypeMovem",])
 export class category {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idcategory"
+        name:"id_category"
         })
-    idcategory:number;
+    id_category:number;
         
 
     @Column("varchar",{ 
@@ -31,18 +33,24 @@ export class category {
         
 
    
-    @ManyToOne(type=>category, category=>category.categorys,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'category_idcategory'})
-    categoryIdcategory:category | null;
+    @ManyToOne(type=>category, category=>category.categorys,{ onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_category'})
+    fkIdCategory:category | null;
 
 
    
-    @OneToMany(type=>category, category=>category.categoryIdcategory,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @ManyToOne(type=>movement_type, movement_type=>movement_type.categorys,{ onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_type_movem'})
+    fkTypeMovem:movement_type | null;
+
+
+   
+    @OneToMany(type=>category, category=>category.fkIdCategory,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     categorys:category[];
     
 
    
-    @OneToMany(type=>movement, movement=>movement.categoryIdcategory,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>movement, movement=>movement.fkIdCategory,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     movements:movement[];
     
 }

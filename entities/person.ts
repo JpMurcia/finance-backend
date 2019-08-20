@@ -1,7 +1,7 @@
 import {BaseEntity,Column,Entity,Index,JoinColumn,JoinTable,ManyToMany,ManyToOne,OneToMany,OneToOne,PrimaryColumn,PrimaryGeneratedColumn,RelationId} from "typeorm";
 import {account} from "./account";
 import {debtor} from "./debtor";
-import {user} from "./user";
+import {user1} from "./user1";
 
 
 @Entity("person",{schema:"finance" } )
@@ -9,9 +9,9 @@ export class person {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idperson"
+        name:"id_person"
         })
-    idperson:number;
+    id_person:number;
         
 
     @Column("varchar",{ 
@@ -39,17 +39,17 @@ export class person {
         
 
    
-    @OneToMany(type=>account, account=>account.personIdperson,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>account, account=>account.fkIdPerson,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     accounts:account[];
     
 
    
-    @OneToMany(type=>debtor, debtor=>debtor.personIdperson,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>debtor, debtor=>debtor.fkIdPerson,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     debtors:debtor[];
     
 
    
-    @OneToMany(type=>user, user=>user.personIdperson,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
-    users:user[];
+    @OneToMany(type=>user1, user1=>user1.fkIdPerson,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
+    users:user1[];
     
 }

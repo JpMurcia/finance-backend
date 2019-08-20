@@ -2,15 +2,15 @@ import {BaseEntity,Column,Entity,Index,JoinColumn,JoinTable,ManyToMany,ManyToOne
 import {person} from "./person";
 
 
-@Entity("user",{schema:"finance" } )
-@Index("fk_user_person_idx",["personIdperson",])
-export class user {
+@Entity("user1",{schema:"finance" } )
+@Index("fk_user_person_idx",["fkIdPerson",])
+export class user1 {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"iduser"
+        name:"id_user"
         })
-    iduser:number;
+    id_user:number;
         
 
     @Column("varchar",{ 
@@ -30,8 +30,8 @@ export class user {
         
 
    
-    @ManyToOne(type=>person, person=>person.users,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'person_idperson'})
-    personIdperson:person | null;
+    @ManyToOne(type=>person, person=>person.users,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_person'})
+    fkIdPerson:person | null;
 
 }

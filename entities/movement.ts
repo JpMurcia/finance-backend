@@ -6,16 +6,16 @@ import {couta} from "./couta";
 
 
 @Entity("movement",{schema:"finance" } )
-@Index("fk_movement_movement_type1_idx",["movementTypeIdmovementType",])
-@Index("fk_movement_category1_idx",["categoryIdcategory",])
-@Index("fk_movement_account1_idx",["accountIdaccount",])
+@Index("fk_movement_movement_type1_idx",["fkTypeMovem",])
+@Index("fk_movement_category1_idx",["fkIdCategory",])
+@Index("fk_movement_account1_idx",["fkIdAccount",])
 export class movement {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idmovement"
+        name:"id_movement"
         })
-    idmovement:number;
+    id_movement:number;
         
 
     @Column("double",{ 
@@ -43,32 +43,32 @@ export class movement {
     @Column("enum",{ 
         nullable:false,
         default: () => "'active'",
-        enum:["active","inactive"],
+        enum:["active","inactive","Pendiente"],
         name:"mo_state"
         })
     mo_state:string;
         
 
    
-    @ManyToOne(type=>movement_type, movement_type=>movement_type.movements,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'movement_type_idmovement_type'})
-    movementTypeIdmovementType:movement_type | null;
+    @ManyToOne(type=>movement_type, movement_type=>movement_type.movements,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_type_movem'})
+    fkTypeMovem:movement_type | null;
 
 
    
-    @ManyToOne(type=>category, category=>category.movements,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'category_idcategory'})
-    categoryIdcategory:category | null;
+    @ManyToOne(type=>category, category=>category.movements,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_category'})
+    fkIdCategory:category | null;
 
 
    
-    @ManyToOne(type=>account, account=>account.movements,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'account_idaccount'})
-    accountIdaccount:account | null;
+    @ManyToOne(type=>account, account=>account.movements,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_account'})
+    fkIdAccount:account | null;
 
 
    
-    @OneToMany(type=>couta, couta=>couta.movementIdmovement,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>couta, couta=>couta.fkIdMovement,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     coutas:couta[];
     
 }

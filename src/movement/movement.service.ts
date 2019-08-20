@@ -1,132 +1,89 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
-import { JwtService } from '@nestjs/jwt';
+import { person } from '../../entities/person';
+import { movement } from '../../entities/movement';
+import { user1 } from '../../entities/user1';
+import { Repository, getManager } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class MovementService {
-  [x: string]: any;
-
-  constructor(
-
-    // @InjectRepository(grade, 'schemaInstitution')
-    // private readonly gradeRepository: Repository<grade>,
-    // @InjectRepository(group, 'schemaInstitution')
-
-  ){
-  }
-
-  async getHello() {
-    return await this.headquarterRepository.find();
-  }
 
 
-  async GetMovement(UserId){
-    let movement;
-    movement  = await this.movementRepository
-    .createQueryBuilder("headquarter")
-    .select("headquarter.id", "id")
-    .addSelect("headquarter.name", "name")
-    .addSelect("headquarter.telephone", "telephone")
-    .addSelect("headquarter.email", "email")
-    .addSelect("city.name", "city")
-    .addSelect("department.name", "departament")
- // .subQuery  
-    .innerJoin("city", "city", "city.id = headquarter.fk_city")
-    .innerJoin("department","department","department.id=city.fk_department") 
+    constructor(
+       // @InjectRepository(person) private readonly personRepository: Repository<person>,
+        @InjectRepository(user1) private readonly userRepository: Repository<user1>,
+        @InjectRepository(movement) private readonly movementRepository: Repository<movement>
+    ) { }
 
- 
-    .where("headquarter.id = :headquarter_id", { headquarter_id: UserId } )
-  
-   
-     .execute();
-/* */
- 
-  }
+   async getHello(){
 
-  async GetCoordinateByHeadquarter(headquarterId){
-    return await this.headquarterRepository
-    .createQueryBuilder("headquarter")
-    .select('admin.id', 'adminId')
-    .addSelect("ur.email", "email")
-    .addSelect("person.name", "name")
-    .addSelect("person.lastname", "lastname")
-    .addSelect("person.phone", "phone")
-    .leftJoin("admin", "admin", "headquarter.fk_admin = admin.id")
-    .innerJoin("admin_rol", "admin_rol", "admin_rol.fk_admin = admin.id")
-    .innerJoin("rol", "rol", "admin_rol.fk_rol = rol.id")
-    .innerJoin("user", "ur", "admin.fk_user = ur.id")
-    .innerJoin("person", "person", "person.fk_user = ur.id")
-    .where("headquarter.id=:headquarter_id", { headquarter_id: headquarterId})
-    .execute()
-
-  }
-
-
-  
-  async getCoordinate() {
-    return await this.headquarterRepository
-      .createQueryBuilder("headquarter")
-      .select('admin.id', 'adminId')
-      .addSelect("ur.email", "email")
-      .addSelect("person.name", "name")
-      .addSelect("person.lastname", "lastname")
-      .addSelect("person.phone", "phone")
-      .leftJoin("admin", "admin", "headquarter.fk_admin = admin.id")
-      .innerJoin("admin_rol", "admin_rol", "admin_rol.fk_admin = admin.id")
-      .innerJoin("rol", "rol", "admin_rol.fk_rol = rol.id")
-      .innerJoin("user", "ur", "admin.fk_user = ur.id")
-      .innerJoin("person", "person", "person.fk_user = ur.id")
-      .where("headquarter.id=:idHeadquarter", { idHeadquarter: 2 })
-      .execute()
-  }
-
-
-   async GetGroupsByHeadquarter(headquarterId){
-    
-   let group1= await this.headquarterRepository
-    .createQueryBuilder("headquarter")
-    .select("grade.id", "gradeId")
-    .addSelect("grade.name", "gradeName")
-    .addSelect("groupp.max_students", "maxStudents")
-    .addSelect("groupp.id", "id")
-    .addSelect("groupp.group_name", "name")
-    .addSelect("groupp.working_day", "workingDay")
-    .addSelect("count(enrollment.fk_student)","studentsTotal")
-    
-    //.addSelect("COUNT(enrollment.fk_student)", "studentsTotal")
-//  // .subQuery  
-    .innerJoin("grade", "grade", "headquarter.id = grade.fk_headquarter")
-    .innerJoin("group","groupp","grade.id=groupp.fk_grade") 
-    .innerJoin("enrollment","enrollment","groupp.id=enrollment.fk_group") 
-    
-
- 
-    .where("headquarter.id = :headquarter_id", { headquarter_id: headquarterId } )
-  
-    .groupBy("grade.id")
-    .addGroupBy("grade.name")
-    .addGroupBy("groupp.max_students")
-    .addGroupBy("groupp.id")
-    .addGroupBy("groupp.group_name")
-    .addGroupBy("groupp.working_day")
-  
-    .execute();
-
-    
-    return 0;
+    return await this.movementRepository.find();
    }
 
+    async GetMovement(UserId){
+        let movement;
+        return         await this.movementRepository
+        .createQueryBuilder("movement")
+        
+        .innerJoin("account","account","movement.fk_id_account = account.id_account") 
+    
+        .where("account.fkIdPerson= :fk_id_persona", { fk_id_persona: UserId } )
+    
+       //la fk debe ser tal cual como esta en entities al lado donde se referencia
+         .execute();
+    /* */
+     
+    
+      }
+      async getMovementAll() {
+        return await this.movementRepository.find();
+    }
 
+      async GetMovementGasto(UserId){
+        let movement1;
+        return await this.userRepository
+        .createQueryBuilder("user1")
+        .select("movement.id_movement", "id")
+        .addSelect("movement.mo_value", "valor")
+        .addSelect("movement.mo_date", "fecha")
+        .addSelect("movement.mo_description", "description")
+        .addSelect("category.ca_name", "Category_name")
+        .addSelect("cuenta.acc_title", "cuenta")
+        
+     // .subQuery  
+        .innerJoin("account", "cuenta", "cuenta.fk_id_person = user1.id_user")
+        .innerJoin("movement","movement","movement.fk_id_account = cuenta.id_account") 
+        .innerJoin("movement_type", "movement_type", "movement_type.id_type_movement = movement.fk_type_movem")
+        .innerJoin("category", "category", "category.id_category = movement.fk_id_category")
+        .where("user1.id_user = :user1_id", { user1_id: UserId } )
+        .andWhere("movement_type.mt_name= :type", { type: "Gastos" } )
+       
+         .execute();
+    /* */
+     
+      }
 
-
-
-
-
-
-   
-
-
-
+      async GetMovementIngreso(UserId){
+        return await this.userRepository
+        .createQueryBuilder("user1")
+        .select("movement.id_movement", "id")
+        .addSelect("movement.mo_value", "valor")
+        .addSelect("movement.mo_date", "fecha")
+        .addSelect("movement.mo_description", "description")
+        .addSelect("category.ca_name", "Category_name")
+        .addSelect("cuenta.acc_title", "cuenta")
+        
+     // .subQuery  
+        .innerJoin("account", "cuenta", "cuenta.fk_id_person = user1.id_user")
+        .innerJoin("movement","movement","movement.fk_id_account = cuenta.id_account") 
+        .innerJoin("movement_type", "movement_type", "movement_type.id_type_movement = movement.fk_type_movem")
+        .innerJoin("category", "category", "category.id_category = movement.fk_id_category")
+        .where("user1.id_user = :user1_id", { user1_id: UserId } )
+        .andWhere("movement_type.mt_name= :type", { type: "Ingresos" } )
+       
+         .execute();
+    /* */
+     
+      }
 }

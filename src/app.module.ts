@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { CommonModule } from './common/common.module';
-
+import { MovementModule } from './movement/movement.module';
+import { AuthModule } from './auth/auth.module';
+import { AssociatedModule } from './associated/associated.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-  
-    CommonModule,
-
+    TypeOrmModule.forRoot(),
+    MovementModule, 
+    AuthModule, 
+    AssociatedModule, 
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-
-}
+export class AppModule {}

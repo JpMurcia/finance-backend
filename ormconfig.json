@@ -9,7 +9,7 @@
     "database": "finance",
     "synchronize": false,
     "entities": [
-      "entities/*.js"
+      "entities/*.ts"
     ]
   }
 ]

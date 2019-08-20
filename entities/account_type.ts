@@ -7,9 +7,9 @@ export class account_type {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idaccount_type"
+        name:"id_account_type"
         })
-    idaccount_type:number;
+    id_account_type:number;
         
 
     @Column("varchar",{ 
@@ -30,7 +30,7 @@ export class account_type {
         
 
    
-    @OneToMany(type=>account, account=>account.accountTypeIdaccountType,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>account, account=>account.fkTypeAcco,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     accounts:account[];
     
 }

@@ -3,14 +3,14 @@ import {person} from "./person";
 
 
 @Entity("debtor",{schema:"finance" } )
-@Index("fk_debtor_person1_idx",["personIdperson",])
+@Index("fk_debtor_person1_idx",["fkIdPerson",])
 export class debtor {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"iddebtor"
+        name:"id_debtor"
         })
-    iddebtor:number;
+    id_debtor:number;
         
 
     @Column("enum",{ 
@@ -31,8 +31,22 @@ export class debtor {
         
 
    
-    @ManyToOne(type=>person, person=>person.debtors,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'person_idperson'})
-    personIdperson:person | null;
+    @ManyToOne(type=>person, person=>person.debtors,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_person'})
+    fkIdPerson:person | null;
 
+
+    @Column("double",{ 
+        nullable:true,
+        name:"values_debtor"
+        })
+    values_debtor:number | null;
+        
+
+    @Column("date",{ 
+        nullable:true,
+        name:"date_debtor"
+        })
+    date_debtor:string | null;
+        
 }

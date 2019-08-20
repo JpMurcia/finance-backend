@@ -1,4 +1,5 @@
 import {BaseEntity,Column,Entity,Index,JoinColumn,JoinTable,ManyToMany,ManyToOne,OneToMany,OneToOne,PrimaryColumn,PrimaryGeneratedColumn,RelationId} from "typeorm";
+import {category} from "./category";
 import {movement} from "./movement";
 
 
@@ -7,9 +8,9 @@ export class movement_type {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idmovement_type"
+        name:"id_type_movement"
         })
-    idmovement_type:number;
+    id_type_movement:number;
         
 
     @Column("varchar",{ 
@@ -20,15 +21,13 @@ export class movement_type {
     mt_name:string;
         
 
-    @Column("date",{ 
-        nullable:false,
-        name:"mt_date_acction"
-        })
-    mt_date_acction:string;
-        
+   
+    @OneToMany(type=>category, category=>category.fkTypeMovem,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
+    categorys:category[];
+    
 
    
-    @OneToMany(type=>movement, movement=>movement.movementTypeIdmovementType,{ onDelete: 'NO ACTION' ,onUpdate: 'NO ACTION' })
+    @OneToMany(type=>movement, movement=>movement.fkTypeMovem,{ onDelete: 'CASCADE' ,onUpdate: 'CASCADE' })
     movements:movement[];
     
 }

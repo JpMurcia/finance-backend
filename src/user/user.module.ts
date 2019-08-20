@@ -1,27 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { RolInitDbService } from '../common/init_data_db/rol';
-import { PermissionInitDbService } from '../common/init_data_db/permission';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { user } from '../../entities/user';
 
+import { user1 } from '../../entities/user1';
+import { person } from '../../entities/person';
+import { account } from '../../entities/account';
 
 @Module({
   imports: [
-
+    TypeOrmModule.forFeature([user1, person,account])
   ],
   controllers: [UserController],
-  providers: [UserService, RolInitDbService, PermissionInitDbService],
+  providers: [UserService]
 })
-export class UserModule {
-  
-  constructor(
-    private rolInitDbService: RolInitDbService,
-    private permissionInitDbService: PermissionInitDbService
-  ){
-    this.rolInitDbService.default();
-    this.permissionInitDbService.default();
-  }
-}
+export class UserModule { }

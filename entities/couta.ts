@@ -3,14 +3,14 @@ import {movement} from "./movement";
 
 
 @Entity("couta",{schema:"finance" } )
-@Index("fk_couta_movement1_idx",["movementIdmovement",])
+@Index("fk_couta_movement1_idx",["fkIdMovement",])
 export class couta {
 
     @PrimaryGeneratedColumn({
         type:"int", 
-        name:"idcouta"
+        name:"id_couta"
         })
-    idcouta:number;
+    id_couta:number;
         
 
     @Column("double",{ 
@@ -21,8 +21,15 @@ export class couta {
         
 
    
-    @ManyToOne(type=>movement, movement=>movement.coutas,{  nullable:false,onDelete: 'NO ACTION',onUpdate: 'NO ACTION' })
-    @JoinColumn({ name:'movement_idmovement'})
-    movementIdmovement:movement | null;
+    @ManyToOne(type=>movement, movement=>movement.coutas,{  nullable:false,onDelete: 'CASCADE',onUpdate: 'CASCADE' })
+    @JoinColumn({ name:'fk_id_movement'})
+    fkIdMovement:movement | null;
 
+
+    @Column("date",{ 
+        nullable:false,
+        name:"date_couta"
+        })
+    date_couta:string;
+        
 }
