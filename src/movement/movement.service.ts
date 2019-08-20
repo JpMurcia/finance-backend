@@ -5,6 +5,7 @@ import { movement } from '../../entities/movement';
 import { user1 } from '../../entities/user1';
 import { Repository, getManager } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import {MovementDto} from './dto/movement.dto';
 
 @Injectable()
 export class MovementService {
@@ -20,6 +21,30 @@ export class MovementService {
 
     return await this.movementRepository.find();
    }
+
+   
+  //  async createMovement(movement: MovementDto){
+  //   let response;
+  //   try {
+  //       await getManager().transaction(async entityManager => {
+            
+
+  //           await entityManager.save(
+  //               this.movementRepository.create({
+  //                    "":,
+  //                   "password": movement.password
+                    
+  //               }));
+
+  //           response = { "code": "3", "message": `Éxito: ${movement.}` };
+  //       });
+  //   } catch (error) {
+  //       response = { "code": "1", "message": `Error: ${error}` };
+  //   } finally {
+  //       return response;
+  //   }
+
+  //  }
 
     async GetMovement(UserId){
         let movement;

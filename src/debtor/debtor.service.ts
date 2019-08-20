@@ -34,21 +34,24 @@ export class DebtorService {
       }
 
 
+
       async CreateDebtort(debtor: DebtorDto){
         let response;
             try {
                 await getManager().transaction(async entityManager => {
-                    const Personaux = await entityManager.save(
-                        this.personRepository.create({
-                        }));
+                    // const Personaux = await entityManager.save(
+                    //     this.personRepository.create({
+                    //     }));
     
                     const newDebtor = await entityManager.save(
                         this.debtorRepository.create({
                          
                             "de_description": debtor.de_description,
                            
-                            "fkIdPerson": { id_person: Personaux.id_person },
-                            "values_debtor": debtor.values
+                            "fkIdPerson": debtor.fk_id_person ,
+                            "values_debtor": debtor.values,
+                            "de_state": "active",
+                            "date_debtor":  new Date().toDateString()
                         }));
     
                    

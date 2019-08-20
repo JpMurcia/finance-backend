@@ -1,18 +1,18 @@
 import { Controller } from '@nestjs/common';
-import {  Get, UseGuards, Req, SetMetadata, Param } from '@nestjs/common';
+import {  Get, UseGuards, Req, SetMetadata, Param ,Post,Body} from '@nestjs/common';
 import { MovementService } from './movement.service';
+import {MovementDto} from './dto/movement.dto';
 
 @Controller('movement')
 export class MovementController {
 
     constructor(private readonly MovementService: MovementService){}
 
-    getHello() {
-        
-        console.log("cxxc");
-        
-        return this.MovementService.getHello();
-      }
+    @Post('create')
+    async createMovement(@Body() body: MovementDto){{
+     // const response = await this.MovementService.createMovement(body);
+      //  return response;
+    }}
     
 
     @Get('all/:UserId')
